@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>沖繩自由行</title>
+
+<style>
+body{
+    font-family: "Microsoft JhengHei", sans-serif;
+    margin:0;
+    background:#f5f7fa;
+}
+
+header{
+    background:#0099cc;
+    color:white;
+    text-align:center;
+    padding:20px;
+    font-size:28px;
+    font-weight:bold;
+}
+
+.day-btns{
+    display:flex;
+    overflow-x:auto;
+    background:white;
+    box-shadow:0 2px 5px rgba(0,0,0,.1);
+}
+
+.day-btn{
+    flex:1;
+    min-width:120px;
+    padding:15px;
+    border:none;
+    background:white;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.day-btn.active{
+    background:#74c0fc;
+    color:white;
+    border: none;
+    border-radius: 10px;
+}
+
+.day-content{
+    display:none;
+    padding:20px;
+    animation: fadeIn .25s ease;
+}
+
+.day-content.active{
+    display:block;
+}
+
+.timeline{
+    position:relative;
+    margin-left:20px;
+}
+
+.timeline::before{
+    content:'';
+    position:absolute;
+    left:15px;
+    top:0;
+    bottom:0;
+    width:4px;
+    background:#0099cc;
+}
+
+.item{
+    position:relative;
+    background:white;
+    margin:15px 0 15px 40px;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 2px 6px rgba(0,0,0,.1);
+}
+
+.item::before{
+    content:'';
+    position:absolute;
+    left:-33px;
+    top:20px;
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    background:#0099cc;
+}
+
+.time{
+    color:#0099cc;
+    font-weight:bold;
+    font-size:20px;
+}
+
+.location{
+    font-size:20px;
+    margin-top:5px;
+}
+
+.duration{
+    color:#666;
+    margin-top:5px;
+}
+
+.optional{
+    color:#ff6600;
+    font-weight:bold;
+    line-height: 2;
+}
+
+.flight-no{
+    color:#6f42c1;
+    font-weight:bold;
+    display:block;
+    margin-top:4px;
+}
+
+.summary {
+  background: linear-gradient(135deg, #f5f7ff, #ffffff);
+  border-left: 4px solid #4a90e2;
+  padding: 12px 14px;
+  margin: 10px 0 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.day-content h2 {
+  position: sticky;
+  top: 0;
+  background: rgba(245, 245, 245, 0.85);
+  z-index: 20;
+  padding: 12px 0;
+  margin: 0;
+  border-bottom: 1px solid #ddd;
+  backdrop-filter: blur(10px);
+}
+
+.map-btn {
+  background: #4dabf7;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.booking-list {
+  margin: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.booking-item {
+  background: #fff;
+  padding: 12px 14px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 標籤 */
+.tag {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* 必預訂 */
+.tag.must {
+  background: #ff6b6b;
+  font-size: 18px;
+  color: white;
+}
+
+/* 建議 */
+.tag.suggest {
+  background: #ffa94d;
+  font-size: 18px;
+  color: white;
+}
+
+/* 已預訂 */
+.tag.done {
+  background: #51cf66;
+  font-size: 18px;
+  color: white;
+}
+
+.text {
+  font-size: 18px;
+  color: #333;
+}
+
+.spot-img {
+  margin-top: 10px;
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.checklist-card {
+    background: white;
+    padding: 16px;
+    margin: 12px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+
+.checklist-card h3 {
+    margin-top: 18px;
+    color: #0099cc;
+    font-size: 26px;
+}
+
+.checklist-card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.checklist-card li {
+    padding: 6px 0;
+    line-height: 1.8;
+    font-size: 24px;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateX(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+@media (max-width: 768px) {
+  body {
+    background: #f2f4f7;
+  }
+
+  .item {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .summary {
+    margin: 10px;
+  }
+
+  .spot-img {
+  margin-top: 10px;
+  width: 270px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+🏝️ 沖繩五日自由行
+</header>
+
+<div class="day-btns">
+    <button class="day-btn active" onclick="showTab('booking')">📌 預訂資訊</button>
+    <button class="day-btn" onclick="showTab('checklist')">🎒 必帶清單</button>
+    <button class="day-btn" onclick="showTab('day1')">Day1</button>
+    <button class="day-btn" onclick="showTab('day2')">Day2</button>
+    <button class="day-btn" onclick="showTab('day3')">Day3</button>
+    <button class="day-btn" onclick="showTab('day4')">Day4</button>
+    <button class="day-btn" onclick="showTab('day5')">Day5</button>
+</div>
+
+<!-- booking -->
+<div id="booking" class="day-content active">
+<h2>📌 預訂資訊</h2>
+
+<div class="booking-list">
+
+<div class="booking-item">
+    <span class="tag done">已購買</span>
+    <span class="text">台灣 - 那霸機票 (9/22 8:00起飛)
+    </span>
+</div>
+
+<div class="booking-item">
+    <span class="tag done">已購買</span>
+    <span class="text">那霸 - 台灣機票 (9/26 16:45起飛)
+    </span>
+</div>
+
+<div class="booking-item">
+    <span class="tag done">已預訂</span>
+    <span class="text">那覇東急REI飯店 (9/22 15:00入住 ~ 9/26 10:00退房) -> 虹君 Booking
+    </span>
+</div>
+
+<div class="booking-item">
+    <span class="tag done">已預訂</span>
+    <span class="text">租車 (9/22 12:00取車～9/25 19:00還車) -> 虹君 gogoout
+    </span>
+</div>
+
+<div class="booking-item">
+    <span class="tag done">已購買</span>
+    <span class="text">Gangala之谷 (9/23 10:00) -> 育聖 網頁
+    </span>
+</div>
+
+<div class="booking-item">
+    <span class="tag suggest">建議訂</span>
+    <span class="text">玉泉洞門票 (9/23) -> 虹君 TRIP
+    </span>
+</div>
+
+<div class="booking-item">
+    <span class="tag suggest">建議訂</span>
+    <span class="text">Yasaimakigushiya Gururi 居酒屋 (9/23 晚餐)</span>
+</div>
+
+<div class="booking-item">
+    <span class="tag done">已購買</span>
+    <span class="text">瀨底島玻璃獨木舟 (9/24 09:30) -> 育聖 ACTIVITY JAPAN
+    </span>
+</div>
+
+<div class="booking-item">
+    <span class="tag suggest">建議訂</span>
+    <span class="text">沖繩美麗海水族館門票 (9/24)</span>
+</div>
+
+<div class="booking-item">
+    <span class="tag suggest">建議訂</span>
+    <span class="text">萬座毛門票 (9/24)</span>
+</div>
+
+<div class="booking-item">
+    <span class="tag suggest">建議訂</span>
+    <span class="text">燒肉 琉球之牛 (9/25 晚餐)</span>
+</div>
+
+<div class="booking-item">
+    <span class="tag suggest">建議訂</span>
+    <span class="text">C&C Breakfast (9/26 早餐)</span>
+</div>
+
+<div class="booking-item">
+    <span class="tag must">必須買</span>
+    <span class="text">旅平險</span>
+</div>
+
+<div class="booking-item">
+    <span class="tag must">必須買</span>
+    <span class="text">eSIM</span>
+</div>
+
+</div>
+</div>
+
+<!-- checklist -->
+<div id="checklist" class="day-content">
+
+<h2>🎒 必帶清單</h2>
+
+<div class="checklist-card">
+
+<h3>📄 證件</h3>
+<ul>
+    <li>☐ 護照</li>
+    <li>☐ 身分證</li>
+    <li>☐ 台灣駕照</li>
+    <li>☐ 日文譯本</li>
+</ul>
+
+<h3>💳 金融</h3>
+<ul>
+    <li>☐ 信用卡</li>
+    <li>☐ 日幣現金</li>
+    <li>☐ 台幣</li>
+</ul>
+
+<h3>📱 3C</h3>
+<ul>
+    <li>☐ 手機</li>
+    <li>☐ 行動電源</li>
+    <li>☐ 充電線</li>
+</ul>
+
+<h3>👕 衣物</h3>
+<ul>
+    <li>☐ 換洗衣物</li>
+    <li>☐ 外套</li>
+    <li>☐ 帽子</li>
+</ul>
+
+</div>
+
+</div>
+
+<!-- Day1 -->
+<div id="day1" class="day-content">
+<h2>Day 1｜2026/09/22(星期二)</h2>
+<button class="map-btn" onclick="openDay1Map()">🗺️ Day1 地圖模式</button>
+<div class="summary">
+✈️ 去程：桃園機場 → 那霸機場<br>
+🚗 租車：12:00 取車<br>
+🏙️ 市區觀光：牧志市場 / 識名園 / 國際通<br>
+🌅 海景：瀨長島夕陽<br>
+🏨 住宿：那覇東急REI飯店
+</div>
+
+<div class="timeline">
+
+<div class="item">
+<div class="time">05:00</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=萬大路486巷81號" target="_blank">
+        萬大路486巷81號<br>
+    </a>
+</div>
+</div>
+
+<div class="item">
+    <div class="time">05:39</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=臺灣桃園國際機場" target="_blank">
+        TPE 臺灣桃園國際機場(第二航廈)
+    </a>
+</div>
+    <span class="optional">✈️ 08:00 起飛</span>
+    <span class="flight-no">
+        中華航空 CI120
+    </span>
+<div class="duration">停留 02時21分</div>
+</div>
+
+<div class="item">
+<div class="time">10:45</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=那霸機場" target="_blank">
+        OKA 那霸機場(第一航廈)
+    </a>
+</div>
+<div class="duration">停留 01時00分</div>
+</div>
+
+<div class="item">
+    <div class="time">12:00</div>
+<div class="location">
+    <a href="https://maps.app.goo.gl/mgWyWRcqopAp82Qj6" target="_blank">
+        ハレバレレンタカー租車那覇店
+    </a>
+</div>
+  <span class="optional">預訂12:00取車</span>
+<div class="duration">停留 00時30分</div>
+</div>
+
+<div class="item">
+<div class="time">13:01</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=那霸市第一牧志公設市場" target="_blank">
+        那霸市第一牧志公設市場
+    </a>
+</div>
+<div class="duration">停留 01時30分</div>
+</div>
+
+<div class="item">
+<div class="time">14:46</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=識名園" target="_blank">
+        識名園
+    </a>
+</div>
+<div class="duration">停留 01時30分</div>
+<img class="spot-img" src="images/識名園.jpg">
+</div>
+
+<div class="item">
+<div class="time">16:41</div>
+<div class="location">
+    <a href="https://maps.app.goo.gl/yZH2WinKEtcxweCn9" target="_blank">
+        瀨長島
+    </a>
+</div>
+    <span class="optional">
+    <a href="https://maps.google.com/?q=幸福鬆餅" target="_blank">
+        幸福鬆餅
+    </a>
+    &
+    <a href="https://maps.app.goo.gl/FQjT412ak5V7JLA77" target="_blank">
+        蝦蝦飯<br>
+    </a>
+    <a href="https://bobbytravel.tw/senaga-island/" target="_blank">
+        波比看世界介紹
+    </a>
+    </span>
+<div class="duration">停留 02時00分</div>
+<img class="spot-img" src="images/蝦蝦飯.jpeg">
+<br>
+<img class="spot-img" src="images/幸福鬆餅.jpg">
+</div>
+
+<div class="item">
+<div class="time">19:10</div>
+<div class="location">
+    <a href="https://maps.app.goo.gl/msiiYq8RE2VuVbQY6" target="_blank">
+        那霸國際通商店街
+    </a>
+</div>
+<div class="duration">停留 02時00分</div>
+</div>
+
+<div class="item">
+<div class="time">21:32</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=那覇東急REI飯店" target="_blank">
+        那覇東急REI飯店 🏨
+    </a>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- Day2 -->
+<div id="day2" class="day-content">
+<h2>Day 2｜2026/09/23(星期三)</h2>
+<button class="map-btn" onclick="openDay2Map()">🗺️ Day2 地圖模式</button>
+<div class="summary">
+🌿 自然探險：Gangala之谷 / 玉泉洞（鐘乳石洞）<br>
+🪖 歷史景點：沖繩戰跡國定公園<br>
+🍽️ 美食：Yasaimakigushiya Gururi<br>
+🏙️ 晚間：國際通散步<br>
+🏨 住宿：那覇東急REI飯店
+</div>
+
+<div class="timeline">
+
+<div class="item">
+<div class="time">09:00</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=那覇東急REI飯店" target="_blank">
+        那覇東急REI飯店 🏨
+    </a>
+</div>
+</div>
+
+<div class="item">
+<div class="time">09:26</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=Gangala之谷" target="_blank">
+        Gangala之谷
+    </a>
+</div>
+    <span class="optional">
+    預約10:00場次<br>
+    <a href="https://bobbytravel.tw/gangala/" target="_blank">
+        波比看世界介紹
+    </a>
+    </span>
+<div class="duration">停留 02時00分</div>
+<img class="spot-img" src="images/gangala.jpeg">
+</div>
+
+<div class="item">
+<div class="time">12:05</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=玉泉洞" target="_blank">
+        玉泉洞
+    </a>
+     + 午餐
+</div>
+    <span class="optional">
+        <a href="https://bobbytravel.tw/gyokusendo-cave/" target="_blank">
+            波比看世界介紹
+        </a>
+    </span>
+<div class="duration">停留 03時30分</div>
+<img class="spot-img" src="images/玉泉洞.jpeg">
+</div>
+
+<div class="item">
+<div class="time">16:16</div>
+<div class="location">
+    <a href="https://maps.app.goo.gl/ZUBzbaiWNZPWfaqg7" target="_blank">
+        沖繩戰跡國定公園
+    </a>
+</div>
+<div class="duration">停留 01時00分</div>
+</div>
+
+<div class="item">
+<div class="time">18:00</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=Yasaimakigushiya Gururi Honten" target="_blank">
+        Yasaimakigushiya Gururi Honten
+    </a>
+</div>
+<div class="duration">停留 01時30分</div>
+<img class="spot-img" src="images/居酒屋.jpeg">
+</div>
+
+<div class="item">
+<div class="time">19:35</div>
+<div class="location">
+    <a href="https://maps.app.goo.gl/msiiYq8RE2VuVbQY6" target="_blank">
+        那霸國際通商店街
+    </a>
+</div>
+<div class="duration">停留 02時00分</div>
+</div>
+
+<div class="item">
+<div class="time">21:42</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=那覇東急REI飯店" target="_blank">
+        那覇東急REI飯店 🏨
+    </a>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- Day3 -->
+<div id="day3" class="day-content">
+<h2>Day 3｜2026/09/24(星期四)</h2>
+<button class="map-btn" onclick="openDay3Map()">🗺️ Day3 地圖模式</button>
+<div class="summary">
+🤿 海上活動：瀨底島玻璃獨木舟<br>
+🍴 午餐：島豚料理 / 海邦丸（二選一）<br>
+🐠 主景點：沖繩美麗海水族館（超重點）<br>
+🌄 海景：萬座毛夕陽<br>
+🛍️ 購物：AEON Mall Rycom / 晚餐<br>
+🏨 住宿：那覇東急REI飯店
+</div>
+
+<div class="timeline">
+
+<div class="item">
+<div class="time">07:30</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=那覇東急REI飯店" target="_blank">
+        那覇東急REI飯店 🏨
+    </a>
+</div>
+</div>
+
+<div class="item">
+<div class="time">08:57</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=瀨底島玻璃獨木舟" target="_blank">
+        瀨底島玻璃獨木舟
+    </a>
+</div>
+    <span class="optional">
+        預約09:30場次
+        <a href="https://okinawa.letsgojp.com/archives/18531/" target="_blank">
+            介紹
+        </a>
+    </span>
+<div class="duration">停留 01時30分</div>
+<img class="spot-img" src="images/獨木舟.jpeg">
+</div>
+
+<div class="item">
+<div class="time">11:10</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=Island+Pig+House" target="_blank">
+        島豚家
+    </a>
+    或
+    <a href="https://maps.app.goo.gl/EaEmaAYRj6TQb59R6" target="_blank">
+        海人料理 海邦丸
+    </a>
+</div>
+<div class="duration">停留 01時00分</div>
+<img class="spot-img" src="images/島豚家.jpeg">
+<br>
+<img class="spot-img" src="images/海邦丸.jpeg">
+</div>
+
+<div class="item">
+<div class="time">12:30</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=沖繩美麗海水族館" target="_blank">
+        沖繩美麗海水族館
+    </a>
+</div>
+    <span class="optional">
+        鯨鯊餵食秀 -> 15:00 / 17:00 兩場<br>海豚秀 -> 10:30 / 11:30 / 13:00 / 15:00 / 17:00 共五場<br>
+        <a href="https://churaumi.okinawa/tc/" target="_blank">
+            官網
+        </a>
+        &nbsp;&nbsp;&nbsp;
+        <a href="https://churaumi.okinawa/tc/userfiles/files/pamphlet/tc_schedule.pdf" target="_blank">
+            節目表<br>
+        </a>
+        <a href="https://bobbytravel.tw/churaumi-aquarium/" target="_blank">
+            波比看世界介紹
+        </a>
+    </span>
+<div class="duration">停留 04時00分</div>
+</div>
+
+<div class="item">
+<div class="time">17:12</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=許田休息站" target="_blank">
+        許田休息站
+    </a>
+</div>
+  <span class="optional">（視時間決定）</span>
+<div class="duration">停留 00時30分</div>
+</div>
+
+<div class="item">
+<div class="time">18:00</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=萬座毛" target="_blank">
+        萬座毛
+    </a>
+</div>
+<div class="duration">停留 01時00分</div>
+<img class="spot-img" src="images/萬座毛.jpeg">
+</div>
+
+<div class="item">
+<div class="time">20:11</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=AEON+Mall+Okinawa+Rycom" target="_blank">
+        AEON Mall Okinawa Rycom
+    </a>
+    或 壽喜燒
+</div>
+<div class="duration">停留 02時00分</div>
+</div>
+
+<div class="item">
+<div class="time">21:47</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=那覇東急REI飯店" target="_blank">
+        那覇東急REI飯店 🏨
+    </a>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- Day4 -->
+<div id="day4" class="day-content">
+<h2>Day 4｜2026/09/25(星期五)</h2>
+<button class="map-btn" onclick="openDay4Map()">🗺️ Day4 地圖模式</button>
+<div class="summary">
+🛍️ 購物：永旺北谷 / 美國村<br>
+🏯 文化景點：首里城<br>
+🍖 晚餐：燒肉 琉球之牛（國際通）<br>
+🚗 行程尾聲：租車歸還<br>
+🏨 住宿：那覇東急REI飯店
+</div>
+
+<div class="timeline">
+
+<div class="item">
+<div class="time">08:30</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=那覇東急REI飯店" target="_blank">
+        那覇東急REI飯店 🏨
+    </a>
+</div>
+</div>
+  
+<div class="item">
+<div class="time">09:07</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=永旺+北谷店" target="_blank">
+        永旺 北谷店
+    </a>
+</div>
+<div class="duration">停留 02時00分</div>
+</div>
+
+<div class="item">
+<div class="time">11:12</div>
+<div class="location">
+    <a href="https://maps.app.goo.gl/sXZZntAjRaYhLyJX6" target="_blank">
+        美國村
+    </a>
+     + 午餐
+</div>
+    <span class="optional">
+        <a href="https://maps.app.goo.gl/dqRByDXUAPjsTLwt5" target="_blank">
+            珀塔瑪 北谷 美國村店(沖繩飯糰)<br>
+        </a>
+        <a href="https://maps.app.goo.gl/jRDsxBDQrNfSjb797" target="_blank">
+            迴轉壽司市場 美浜店<br>
+        </a>
+        <a href="https://okinawa.letsgojp.com/archives/11334/" target="_blank">
+            介紹
+        </a>
+    </span>
+<div class="duration">停留 02時00分</div>
+<img class="spot-img" src="images/沖繩飯糰.jpg">
+<br>
+<img class="spot-img" src="images/迴轉壽司.jpeg">
+</div>
+
+<div class="item">
+<div class="time">14:00</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=首里城" target="_blank">
+        首里城
+    </a>
+</div>
+    <span class="optional">
+        <a href="https://www.gltjp.com/zh-hant/article/item/20342/" target="_blank">
+            好運日本行介紹<br>
+        </a>
+    </span>
+<div class="duration">停留 04時00分</div>
+<img class="spot-img" src="images/首里城.jpeg">
+</div>
+
+<div class="item">
+<div class="time">18:30</div>
+<div class="location">
+    <a href="https://maps.app.goo.gl/mgWyWRcqopAp82Qj6" target="_blank">
+        ハレバレレンタカー租車那覇店
+    </a>
+</div>
+    <span class="optional">19:00還車</span>
+<div class="duration">停留 00時30分</div>
+</div>
+
+<div class="item">
+<div class="time">19:20</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=燒肉+琉球之牛+那霸國際通" target="_blank">
+        燒肉 琉球之牛 那霸國際通
+    </a>
+</div>
+<div class="duration">停留 02時00分</div>
+<img class="spot-img" src="images/琉球之牛.jpeg">
+</div>
+
+<div class="item">
+<div class="time">21:30</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=那覇東急REI飯店" target="_blank">
+        那覇東急REI飯店 🏨
+    </a>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- Day5 -->
+<div id="day5" class="day-content">
+<h2>Day 5｜2026/09/26(星期六)</h2>
+<button class="map-btn" onclick="openDay5Map()">🗺️ Day5 地圖模式</button>
+<div class="summary">
+🍳 早餐：C&C Breakfast<br>
+⛩️ 文化景點：波上宮<br>
+✈️ 回程：那霸機場 → 桃園機場<br>
+</div>
+
+<div class="timeline">
+
+<div class="item">
+<div class="time">07:30</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=那覇東急REI飯店" target="_blank">
+        那覇東急REI飯店 🏨
+    </a>
+</div>
+</div>
+
+<div class="item">
+<div class="time">08:00</div>
+<div class="location">
+    <a href="https://maps.app.goo.gl/66t6LZKtQXPY27db7" target="_blank">
+        C&C Breakfast
+    </a>
+</div>
+<div class="duration">停留 02時00分</div>
+<img class="spot-img" src="images/CC.jpeg">
+</div>
+
+<div class="item">
+<div class="time">10:13</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=波上宮" target="_blank">
+        波上宮
+    </a>
+</div>
+    <span class="optional">
+        <a href="https://bobbytravel.tw/naminoue-shrine//" target="_blank">
+            波比看世界介紹
+        </a>
+    </span>
+<div class="duration">停留 01時00分</div>
+<img class="spot-img" src="images/波上宮.jpeg">
+</div>
+
+<div class="item">
+<div class="time">11:30</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=那覇東急REI飯店" target="_blank">
+        那覇東急REI飯店 🏨
+    </a>
+</div>
+<div class="duration">停留 00時20分</div>
+</div>
+
+<div class="item">
+<div class="time">12:30</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=那霸機場" target="_blank">
+        OKA 那霸機場
+    </a>
+</div>
+    <span class="optional">✈️ 16:45 起飛</span>
+    <span class="flight-no">
+        樂桃航空 MM929 
+    </span>
+<div class="duration">停留 04時00分</div>
+</div>
+
+<div class="item">
+<div class="time">17:20</div>
+<div class="location">
+    <a href="https://maps.google.com/?q=臺灣桃園國際機場" target="_blank">
+        TPE 臺灣桃園國際機場(第一航廈)
+    </a>
+</div>
+</div>
+
+</div>
+</div>
+
+
+<script>
+
+const tabs = [
+    'booking',
+    'checklist',
+    'day1',
+    'day2',
+    'day3',
+    'day4',
+    'day5'
+];
+
+function showTab(tabId) {
+
+    // 隱藏全部頁面
+    document.querySelectorAll('.day-content').forEach(el => {
+        el.style.display = 'none';
+    });
+
+    // 顯示指定頁面
+    document.getElementById(tabId).style.display = 'block';
+
+    // 更新按鈕狀態
+    document.querySelectorAll('.day-btn').forEach(btn => {
+
+        btn.classList.remove('active');
+
+        if (
+            btn.getAttribute('onclick')
+            ?.includes("'" + tabId + "'")
+        ) {
+            btn.classList.add('active');
+
+            // 自動捲動到目前頁籤
+            btn.scrollIntoView({
+                behavior: 'smooth',
+                inline: 'center'
+            });
+        }
+    });
+}
+
+// ===== 手機左右滑動 =====
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+});
+
+document.addEventListener('touchend', e => {
+
+    touchEndX = e.changedTouches[0].screenX;
+
+    const currentTab =
+        document.querySelector('.day-content[style*="block"]')?.id;
+
+    const currentIndex = tabs.indexOf(currentTab);
+
+    if (currentIndex === -1) return;
+
+    const diff = touchStartX - touchEndX;
+
+    // 左滑 → 下一頁
+    if (diff > 80 && currentIndex < tabs.length - 1) {
+        showTab(tabs[currentIndex + 1]);
+    }
+
+    // 右滑 → 上一頁
+    if (diff < -80 && currentIndex > 0) {
+        showTab(tabs[currentIndex - 1]);
+    }
+
+});
+
+</script>
+
+<script>
+function openDay1Map() {
+    const url = "https://www.google.com/maps/dir/" +
+        "那霸機場/" +
+        "第一牧志公設市場/" +
+        "識名園/" +
+        "瀨長島/" +
+        "那霸國際通商店街/" +
+        "那覇東急REI飯店";
+
+    window.open(url, "_blank");
+}
+</script>
+
+<script>
+function openDay2Map() {
+    const url = "https://www.google.com/maps/dir/" +
+        "那覇東急REI飯店/" +
+        "Gangala之谷/" +
+        "玉泉洞/" +
+        "沖繩戰跡國定公園/" +
+        "Yasaimakigushiya Gururi Honten/" +
+        "那霸國際通商店街/" +
+        "那覇東急REI飯店";
+
+    window.open(url, "_blank");
+}
+</script>
+
+<script>
+function openDay3Map() {
+    const url = "https://www.google.com/maps/dir/" +
+        "那覇東急REI飯店/" +
+        "瀨底島玻璃獨木舟/" +
+        "海人料理 海邦丸/" +
+        "沖繩美麗海水族館/" +
+        "萬座毛/" +
+        "AEON Mall Okinawa Rycom/" +
+        "那覇東急REI飯店";
+
+    window.open(url, "_blank");
+}
+</script>
+
+<script>
+function openDay4Map() {
+    const url = "https://www.google.com/maps/dir/" +
+        "那覇東急REI飯店/" +
+        "永旺 北谷店/" +
+        "美國村/" +
+        "首里城/" +
+        "燒肉 琉球之牛 那霸國際通/" +
+        "那覇東急REI飯店";
+
+    window.open(url, "_blank");
+}
+</script>
+
+<script>
+function openDay5Map() {
+    const url = "https://www.google.com/maps/dir/" +
+        "那覇東急REI飯店/" +
+        "C&C Breakfast/" +
+        "波上宮/" +
+        "那霸機場/"
+
+    window.open(url, "_blank");
+}
+</script>
+
+</body>
+</html>
