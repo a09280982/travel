@@ -4,7 +4,7 @@ body{
     background:#f5f7fa;
 }
 
-header{
+header:not(.navbar){
     background:#0099cc;
     color:white;
     text-align:center;
@@ -283,6 +283,11 @@ header{
 /* ========================================
    Home Page
 ======================================== */
+/* Home background */
+
+body:has(.navbar) {
+    background: #fff;
+}
 
 /* Travel Stats */
 .travel-stats {
@@ -572,4 +577,136 @@ header{
     .about {
         padding: 90px 20px;
     }
+}
+
+/* ========================================
+   Home Navbar
+======================================== */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 20px 6%;
+
+    background: rgba(255, 255, 255, 0.92);
+    color: #222;
+
+    text-align: left;
+
+    border-bottom: 1px solid #eee;
+
+    backdrop-filter: blur(12px);
+}
+
+.navbar .logo {
+    color: #222;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.navbar nav {
+    display: flex;
+    gap: 35px;
+}
+
+.navbar nav a {
+    color: #222;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+
+    transition: opacity 0.3s;
+}
+
+.navbar nav a:hover {
+    opacity: 0.5;
+}
+
+/* ========================================
+   Home Hero
+======================================== */
+
+.hero {
+    min-height: calc(100vh - 70px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            rgba(0, 0, 0, 0.35),
+            rgba(0, 0, 0, 0.35)
+        ),
+        url("../images/okinawa/cover.jpg")
+        center / cover no-repeat;
+}
+
+.hero-content {
+    max-width: 900px;
+    padding: 40px 20px;
+}
+
+.hero-subtitle {
+    margin-bottom: 20px;
+
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 5px;
+}
+
+.hero h1 {
+    margin-bottom: 20px;
+
+    font-size: clamp(45px, 7vw, 85px);
+    font-weight: 700;
+
+    line-height: 1.1;
+}
+
+.hero-description {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+.hero-button {
+    display: inline-block;
+
+    margin-top: 30px;
+    padding: 13px 28px;
+
+    background: white;
+    color: #222;
+
+    border-radius: 30px;
+
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+
+    transition: transform 0.3s;
+}
+
+.hero-button:hover {
+    transform: translateY(-3px);
+}
+
+.hero-location {
+    margin-top: 35px;
+
+    font-size: 12px;
+    letter-spacing: 2px;
+
+    opacity: 0.85;
 }
